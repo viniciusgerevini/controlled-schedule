@@ -85,6 +85,39 @@ describe('Controlled Schedule', function() {
     });
   });
 
+  describe('#startIn()', function() {
+    it('should not start immediatelly', function() {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(100)
+          .startIn('1s');
+
+      schedule.stop();
+
+      expect(task.callCount).to.be.equal(0);
+    });
+
+    it('should start after given time', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(100)
+          .startIn('1s');
+
+      //TODO FAKE TIMERS
+      setTimeout(function() {
+        schedule.stop();
+        expect(task.calledOnce).to.be.true;
+        done();
+      }, 1000);
+    });
+  });
+
   describe('#stop()', function() {
     it('should stop schedule', function(done) {
       let task = sandbox.stub();
@@ -100,8 +133,8 @@ describe('Controlled Schedule', function() {
       //TODO USE FAKE TIMERS
       setTimeout(function() {
         expect(task.callCount).to.be.equal(1);
-        done()
-      }, 1500)
+        done();
+      }, 1500);
     });
   });
 });
