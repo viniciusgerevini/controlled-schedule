@@ -143,11 +143,10 @@ describe('Controlled Schedule', function() {
       let task = sandbox.stub();
       task.returns(Promise.resolve());
 
-      let schedule =
-        execute(task)
-          .every(450)
-          .start()
-          .stopAfter('1s');
+      execute(task)
+        .every(450)
+        .start()
+        .stopAfter('1s');
 
       //TODO USE FAKE TIMERS
       setTimeout(function() {
@@ -155,7 +154,7 @@ describe('Controlled Schedule', function() {
         setTimeout(function() {
           expect(task.callCount).to.be.equal(3);
           done();
-        }, 500)
+        }, 500);
       }, 1100);
     });
   });
