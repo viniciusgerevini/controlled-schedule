@@ -5,16 +5,13 @@ const execute = require('../lib/controlled-schedule');
 
 describe('Controlled Schedule', function() {
   let sandbox = null;
-  // let clock = null
 
   beforeEach(function() {
     sandbox = sinon.sandbox.create();
-    // clock = sinon.useFakeTimers();
   });
 
   afterEach(function() {
     sandbox.restore();
-    // clock.restore();
   });
 
   describe('schedule', function() {
@@ -42,7 +39,6 @@ describe('Controlled Schedule', function() {
           .every(200)
           .start();
 
-      //TODO FAKE TIMERS
       setTimeout(function() {
         schedule.stop();
         expect(task.calledTwice).to.be.true;
@@ -59,7 +55,6 @@ describe('Controlled Schedule', function() {
           .every('1s')
           .start();
 
-      //TODO FAKE TIMERS
       this.timeout(5000);
       setTimeout(function() {
         schedule.stop();
@@ -109,7 +104,6 @@ describe('Controlled Schedule', function() {
           .every(100)
           .startIn('1s');
 
-      //TODO FAKE TIMERS
       setTimeout(function() {
         schedule.stop();
         expect(task.calledOnce).to.be.true;
@@ -130,7 +124,6 @@ describe('Controlled Schedule', function() {
 
       schedule.stop();
 
-      //TODO USE FAKE TIMERS
       setTimeout(function() {
         expect(task.callCount).to.be.equal(1);
         done();
@@ -148,7 +141,6 @@ describe('Controlled Schedule', function() {
         .start()
         .stopAfter('1s');
 
-      //TODO USE FAKE TIMERS
       setTimeout(function() {
         expect(task.callCount).to.be.equal(3);
         setTimeout(function() {
