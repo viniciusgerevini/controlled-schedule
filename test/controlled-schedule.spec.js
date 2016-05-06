@@ -137,4 +137,26 @@ describe('Controlled Schedule', function() {
       }, 1500);
     });
   });
+
+  describe('#stopAfter()', function() {
+    it('should stop schedule after given time', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(450)
+          .start()
+          .stopAfter('1s');
+
+      //TODO USE FAKE TIMERS
+      setTimeout(function() {
+        expect(task.callCount).to.be.equal(3);
+        setTimeout(function() {
+          expect(task.callCount).to.be.equal(3);
+          done();
+        }, 500)
+      }, 1100);
+    });
+  });
 });
