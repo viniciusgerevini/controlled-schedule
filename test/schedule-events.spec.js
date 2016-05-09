@@ -126,7 +126,7 @@ describe('#on', function() {
       setTimeout(function() {
         schedule.stop();
         expect(count).to.be.equal(0);
-        expect(task.callCount).to.be.above(0);
+        expect(task.callCount).to.be.above(1);
         done();
       }, 1000);
     });
@@ -170,7 +170,7 @@ describe('#on', function() {
       setTimeout(function() {
         schedule.stop();
         expect(count).to.be.equal(0);
-        expect(task.callCount).to.be.above(0);
+        expect(task.callCount).to.be.above(1);
         done();
       }, 1000);
     });
