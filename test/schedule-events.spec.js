@@ -176,5 +176,38 @@ describe('#on', function() {
     });
   });
 
+  describe('stop', function() {
+    it('should trigger when stop immediatelly', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(100)
+          .stopAfter('1s');
+
+      schedule.on('stop', function() {
+        done();
+      });
+
+      schedule.start();
+    });
+
+    it('should trigger when stop', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      schedule.on('stop', function() {
+        done();
+      });
+
+      schedule.start();
+      schedule.stop();
+    });
+  });
 
 });
