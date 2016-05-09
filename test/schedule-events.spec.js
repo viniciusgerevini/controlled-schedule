@@ -54,7 +54,7 @@ describe('#on', function() {
 
       schedule.on('run', function(err, value) {
         schedule.stop();
-        if(err)
+        if (err)
           return done('should not throw an error');
 
         expect(value).to.be.equal(taskReturn);
@@ -75,7 +75,7 @@ describe('#on', function() {
 
       schedule.on('run', function(err, value) {
         schedule.stop();
-        if(err) {
+        if (err) {
           expect(err.message).to.be.equal(errorMessage);
           expect(value).to.be.undefined;
           return done();
