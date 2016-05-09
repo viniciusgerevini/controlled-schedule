@@ -5,7 +5,8 @@
   "main": "lib/controlled-schedule.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
-    "lint": "./node_modules/.bin/eslint ./"
+    "lint": "./node_modules/.bin/eslint ./",
+    "pretest": "npm run lint"
   },
   "keywords": [
     "schedule",
