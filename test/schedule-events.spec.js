@@ -83,4 +83,48 @@ describe('Events', function() {
     });
   });
 
+  describe('#afterEachSuccess()', function() {
+    it('should trigger after each success', function(done) {
+      let taskReturn = 'success!';
+      let task = sandbox.stub();
+      task.returns(Promise.resolve(taskReturn));
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      schedule.afterEachSuccess(function(value) {
+        schedule.stop();
+        expect(value).to.be.equal(taskReturn);
+        done();
+      });
+
+      schedule.start();
+    });
+
+    it('should not trigger after error', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.reject());
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      let count = 0;
+
+      schedule.afterEachSuccess(function() {
+        count++;
+      });
+
+      schedule.start();
+
+      setTimeout(function() {
+        schedule.stop();
+        expect(count).to.be.equal(0);
+        expect(task.callCount).to.be.above(0);
+        done();
+      }, 1000);
+    });
+  });
+
 });
