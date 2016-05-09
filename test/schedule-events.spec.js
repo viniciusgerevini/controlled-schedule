@@ -14,6 +14,11 @@ describe('#on', function() {
     sandbox.restore();
   });
 
+  it('should throw an error when wrong event', function() {
+    let schedule = execute(() => null);
+    expect(() => schedule.on('banana', null)).to.throw('Event banana does not exist');
+  });
+
   describe('run', function() {
     it('should trigger after each execution finishes', function(done) {
       let task = sandbox.stub();
@@ -126,5 +131,50 @@ describe('#on', function() {
       }, 1000);
     });
   });
+
+  describe('error', function() {
+    it('should trigger after each error', function(done) {
+      let errorMessage = 'error!';
+      let task = sandbox.stub();
+      task.returns(Promise.reject(new Error(errorMessage)));
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      schedule.on('error', function(error) {
+        schedule.stop();
+        expect(error.message).to.be.equal(errorMessage);
+        done();
+      });
+
+      schedule.start();
+    });
+
+    it('should not trigger when success', function(done) {
+      let task = sandbox.stub();
+      task.returns(Promise.resolve());
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      let count = 0;
+
+      schedule.on('error', function() {
+        count++;
+      });
+
+      schedule.start();
+
+      setTimeout(function() {
+        schedule.stop();
+        expect(count).to.be.equal(0);
+        expect(task.callCount).to.be.above(0);
+        done();
+      }, 1000);
+    });
+  });
+
 
 });
