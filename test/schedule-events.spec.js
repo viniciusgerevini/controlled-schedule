@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const execute = require('../lib/controlled-schedule');
 
-describe('Events', function() {
+describe('#on', function() {
   let sandbox = null;
 
   beforeEach(function() {
@@ -14,7 +14,7 @@ describe('Events', function() {
     sandbox.restore();
   });
 
-  describe('#afterEachRun()', function() {
+  describe('run', function() {
     it('should trigger after each execution finishes', function(done) {
       let task = sandbox.stub();
       task.returns(Promise.resolve());
@@ -25,7 +25,7 @@ describe('Events', function() {
 
       let count = 0;
 
-      schedule.afterEachRun(function() {
+      schedule.on('run', function() {
         count++;
       });
 
@@ -47,7 +47,7 @@ describe('Events', function() {
         execute(task)
           .every(100);
 
-      schedule.afterEachRun(function(err, value) {
+      schedule.on('run', function(err, value) {
         schedule.stop();
         if(err)
           return done('should not throw an error');
@@ -68,7 +68,7 @@ describe('Events', function() {
         execute(task)
           .every(100);
 
-      schedule.afterEachRun(function(err, value) {
+      schedule.on('run', function(err, value) {
         schedule.stop();
         if(err) {
           expect(err.message).to.be.equal(errorMessage);
@@ -83,7 +83,7 @@ describe('Events', function() {
     });
   });
 
-  describe('#afterEachSuccess()', function() {
+  describe('success', function() {
     it('should trigger after each success', function(done) {
       let taskReturn = 'success!';
       let task = sandbox.stub();
@@ -93,7 +93,7 @@ describe('Events', function() {
         execute(task)
           .every(100);
 
-      schedule.afterEachSuccess(function(value) {
+      schedule.on('success', function(value) {
         schedule.stop();
         expect(value).to.be.equal(taskReturn);
         done();
@@ -112,7 +112,7 @@ describe('Events', function() {
 
       let count = 0;
 
-      schedule.afterEachSuccess(function() {
+      schedule.on('success', function() {
         count++;
       });
 
