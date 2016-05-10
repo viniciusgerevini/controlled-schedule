@@ -28,6 +28,23 @@ describe('#startIn()', function() {
     expect(task.callCount).to.be.equal(0);
   });
 
+  it('should not start immediatelly (callback)', function() {
+    let taskCount = 0;
+    let task = function(callback) {
+      taskCount++;
+      callback();
+    };
+
+    let schedule =
+      execute(task)
+        .every(100)
+        .startIn('1s');
+
+    schedule.stop();
+
+    expect(taskCount).to.be.equal(0);
+  });
+
   it('should start after given time', function(done) {
     let task = sandbox.stub();
     task.returns(Promise.resolve());
@@ -40,6 +57,25 @@ describe('#startIn()', function() {
     setTimeout(function() {
       schedule.stop();
       expect(task.calledOnce).to.be.true;
+      done();
+    }, 1000);
+  });
+
+  it('should start after given time (callback)', function(done) {
+    let taskCount = 0;
+    let task = function(callback) {
+      taskCount++;
+      callback();
+    };
+
+    let schedule =
+      execute(task)
+        .every(100)
+        .startIn('1s');
+
+    setTimeout(function() {
+      schedule.stop();
+      expect(taskCount).to.be.equal(1);
       done();
     }, 1000);
   });

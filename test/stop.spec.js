@@ -30,4 +30,24 @@ describe('#stop()', function() {
       done();
     }, 1500);
   });
+
+  it('should stop schedule (callback)', function(done) {
+    let taskCount = 0;
+    let task = function(callback) {
+      taskCount++;
+      callback();
+    };
+
+    let schedule =
+      execute(task)
+        .every('1s')
+        .start();
+
+    schedule.stop();
+
+    setTimeout(function() {
+      expect(taskCount).to.be.equal(1);
+      done();
+    }, 1500);
+  });
 });
