@@ -13,8 +13,12 @@
     "interval",
     "timeout"
   ],
-  "author": "Vinicius Gerevini",
+  "author": "Vinicius Gerevini <viniciusgerevini@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viniciusgerevini/controlled-schedule"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^2.9.0",
