@@ -152,6 +152,30 @@ describe('#on', function() {
 
       schedule.start();
     });
+
+    it('should pass error when task throw an error', function(done) {
+      let errorMessage = 'this is an error!';
+      let task = function() {
+        throw new Error(errorMessage);
+      };
+
+      let schedule =
+        execute(task)
+          .every(100);
+
+      schedule.on('run', function(err, value) {
+        schedule.stop();
+        if (err) {
+          expect(err.message).to.be.equal(errorMessage);
+          expect(value).to.be.undefined;
+          return done();
+        }
+
+        done('should get an error');
+      });
+
+      schedule.start();
+    });
   });
 
   describe('success', function() {
