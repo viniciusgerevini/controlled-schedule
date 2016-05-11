@@ -2,7 +2,7 @@
 const expect = require('chai').expect;
 const execute = require('../lib/controlled-schedule');
 
-describe('Controlled Schedule', function() {
+describe('Create schedule', function() {
   it('should throw an error if task not provided', function() {
     expect(() => execute() ).to.throw('Task not provided');
   });
