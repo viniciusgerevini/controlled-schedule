@@ -1,7 +1,7 @@
 {
   "name": "controlled-schedule",
   "version": "1.0.0",
-  "description": "Recurring schedule. Schedule next execution only after the current one finishes",
+  "description": "Recurring schedule for async tasks. Schedule next execution only after the current one finishes",
   "main": "lib/controlled-schedule.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
@@ -32,5 +32,12 @@
   },
   "engines": {
     "node": ">=4.1.0"
-  }
+  },
+  "files": [
+    "examples",
+    "lib",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ]
 }
