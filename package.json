@@ -26,5 +26,8 @@
   },
   "dependencies": {
     "ms": "^0.7.1"
+  },
+  "engines": {
+    "node": ">=4.3.2"
   }
 }
