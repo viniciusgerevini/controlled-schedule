@@ -1,19 +1,8 @@
 'use strict';
 const expect = require('chai').expect;
-const sinon = require('sinon');
 const execute = require('../lib/controlled-schedule');
 
 describe('#on', function() {
-  let sandbox = null;
-
-  beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(function() {
-    sandbox.restore();
-  });
-
   it('should throw an error when wrong event', function() {
     let schedule = execute(() => null);
     expect(() => schedule.on('banana', null)).to.throw('Event banana does not exist');
@@ -21,8 +10,11 @@ describe('#on', function() {
 
   describe('run', function() {
     it('should trigger after each execution finishes', function(done) {
-      let task = sandbox.stub();
-      task.returns(Promise.resolve());
+      let taskCount = 0;
+      let task = function() {
+        taskCount++;
+        return Promise.resolve();
+      };
 
       let schedule =
         execute(task)
@@ -38,7 +30,7 @@ describe('#on', function() {
 
       setTimeout(function() {
         schedule.stop();
-        expect(task.callCount).to.be.equal(count);
+        expect(taskCount).to.be.equal(count);
         done();
       }, 1000);
     });
@@ -71,8 +63,9 @@ describe('#on', function() {
 
     it('should pass value to callback', function(done) {
       let taskReturn = 'this is the task value';
-      let task = sandbox.stub();
-      task.returns(Promise.resolve(taskReturn));
+      let task = function() {
+        return Promise.resolve(taskReturn);
+      };
 
       let schedule =
         execute(task)
@@ -114,8 +107,9 @@ describe('#on', function() {
 
     it('should pass error when fails', function(done) {
       let errorMessage = 'this is an error!';
-      let task = sandbox.stub();
-      task.returns(Promise.reject(new Error(errorMessage)));
+      let task = function() {
+        return Promise.reject(new Error(errorMessage));
+      };
 
       let schedule =
         execute(task)
@@ -163,8 +157,9 @@ describe('#on', function() {
   describe('success', function() {
     it('should trigger after each success', function(done) {
       let taskReturn = 'success!';
-      let task = sandbox.stub();
-      task.returns(Promise.resolve(taskReturn));
+      let task = function() {
+        return Promise.resolve(taskReturn);
+      };
 
       let schedule =
         execute(task)
@@ -199,8 +194,11 @@ describe('#on', function() {
     });
 
     it('should not trigger after error', function(done) {
-      let task = sandbox.stub();
-      task.returns(Promise.reject());
+      let taskCount = 0;
+      let task = function() {
+        taskCount++;
+        return Promise.reject();
+      };
 
       let schedule =
         execute(task)
@@ -217,7 +215,7 @@ describe('#on', function() {
       setTimeout(function() {
         schedule.stop();
         expect(count).to.be.equal(0);
-        expect(task.callCount).to.be.above(1);
+        expect(taskCount).to.be.above(1);
         done();
       }, 1000);
     });
@@ -253,8 +251,9 @@ describe('#on', function() {
   describe('error', function() {
     it('should trigger after each error', function(done) {
       let errorMessage = 'error!';
-      let task = sandbox.stub();
-      task.returns(Promise.reject(new Error(errorMessage)));
+      let task = function() {
+        return Promise.reject(new Error(errorMessage));
+      };
 
       let schedule =
         execute(task)
@@ -289,8 +288,12 @@ describe('#on', function() {
     });
 
     it('should not trigger when success', function(done) {
-      let task = sandbox.stub();
-      task.returns(Promise.resolve());
+      let taskCount = 0;
+      let task = function() {
+        taskCount++;
+        return Promise.resolve();
+      };
+
 
       let schedule =
         execute(task)
@@ -307,7 +310,7 @@ describe('#on', function() {
       setTimeout(function() {
         schedule.stop();
         expect(count).to.be.equal(0);
-        expect(task.callCount).to.be.above(1);
+        expect(taskCount).to.be.above(1);
         done();
       }, 1000);
     });
@@ -342,8 +345,9 @@ describe('#on', function() {
 
   describe('stop', function() {
     it('should trigger when stop immediatelly', function(done) {
-      let task = sandbox.stub();
-      task.returns(Promise.resolve());
+      let task = function() {
+        return Promise.resolve();
+      };
 
       let schedule =
         execute(task)
@@ -375,8 +379,9 @@ describe('#on', function() {
     });
 
     it('should trigger when stop', function(done) {
-      let task = sandbox.stub();
-      task.returns(Promise.resolve());
+      let task = function() {
+        return Promise.resolve();
+      };
 
       let schedule =
         execute(task)

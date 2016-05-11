@@ -1,22 +1,14 @@
 'use strict';
 const expect = require('chai').expect;
-const sinon = require('sinon');
 const execute = require('../lib/controlled-schedule');
 
 describe('#every', function() {
-  let sandbox = null;
-
-  beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(function() {
-    sandbox.restore();
-  });
-
   it('should repeat task using giving interval', function(done) {
-    let task = sandbox.stub();
-    task.returns(Promise.resolve());
+    let taskCount = 0;
+    let task = function() {
+      taskCount++;
+      return Promise.resolve();
+    };
 
     let schedule =
       execute(task)
@@ -25,7 +17,7 @@ describe('#every', function() {
 
     setTimeout(function() {
       schedule.stop();
-      expect(task.calledTwice).to.be.true;
+      expect(taskCount).to.be.equal(2);
       done();
     }, 300);
   });
@@ -50,8 +42,11 @@ describe('#every', function() {
   });
 
   it('should accept duration string', function(done) {
-    let task = sandbox.stub();
-    task.returns(Promise.resolve());
+    let taskCount = 0;
+    let task = function() {
+      taskCount++;
+      return Promise.resolve();
+    };
 
     let schedule =
       execute(task)
@@ -61,7 +56,7 @@ describe('#every', function() {
     this.timeout(5000);
     setTimeout(function() {
       schedule.stop();
-      expect(task.callCount).to.be.equal(3);
+      expect(taskCount).to.be.equal(3);
       done();
     }, 2100);
   });

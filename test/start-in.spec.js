@@ -1,22 +1,14 @@
 'use strict';
 const expect = require('chai').expect;
-const sinon = require('sinon');
 const execute = require('../lib/controlled-schedule');
 
 describe('#startIn()', function() {
-  let sandbox = null;
-
-  beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(function() {
-    sandbox.restore();
-  });
-
   it('should not start immediatelly', function() {
-    let task = sandbox.stub();
-    task.returns(Promise.resolve());
+    let taskCount = 0;
+    let task = function() {
+      taskCount++;
+      return Promise.resolve();
+    };
 
     let schedule =
       execute(task)
@@ -25,7 +17,7 @@ describe('#startIn()', function() {
 
     schedule.stop();
 
-    expect(task.callCount).to.be.equal(0);
+    expect(taskCount).to.be.equal(0);
   });
 
   it('should not start immediatelly (callback)', function() {
@@ -46,8 +38,11 @@ describe('#startIn()', function() {
   });
 
   it('should start after given time', function(done) {
-    let task = sandbox.stub();
-    task.returns(Promise.resolve());
+    let taskCount = 0;
+    let task = function() {
+      taskCount++;
+      return Promise.resolve();
+    };
 
     let schedule =
       execute(task)
@@ -56,7 +51,7 @@ describe('#startIn()', function() {
 
     setTimeout(function() {
       schedule.stop();
-      expect(task.calledOnce).to.be.true;
+      expect(taskCount).to.be.equal(1);
       done();
     }, 1000);
   });

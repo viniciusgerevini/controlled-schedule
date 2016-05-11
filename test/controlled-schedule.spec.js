@@ -1,19 +1,8 @@
 'use strict';
 const expect = require('chai').expect;
-const sinon = require('sinon');
 const execute = require('../lib/controlled-schedule');
 
 describe('Controlled Schedule', function() {
-  let sandbox = null;
-
-  beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(function() {
-    sandbox.restore();
-  });
-
   it('should throw an error if task not provided', function() {
     expect(() => execute() ).to.throw('Task not provided');
   });
@@ -23,7 +12,7 @@ describe('Controlled Schedule', function() {
   });
 
   it('should create schedule when task provided', function() {
-    let task = sandbox.stub();
+    let task = function() {};
     expect(execute(task)).to.have.property('start');
   });
 });
