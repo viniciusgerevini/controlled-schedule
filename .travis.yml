@@ -5,3 +5,5 @@ node_js:
   - "5.9.1"
 script:
   - npm run coverage
+after_success:
+  - 'cat ./coverage/lcov.info | ./node_modules/.bin/coveralls'
