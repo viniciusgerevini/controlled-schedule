@@ -57,7 +57,7 @@ describe('#stopAfter()', function() {
         .stopAfter('1s');
 
     schedule.on('stop', function() {
-      expect(Date.now() - start).to.be.above(1200);
+      expect(Date.now() - start).to.be.above(190);
       done();
     });
 
@@ -79,7 +79,7 @@ describe('#stopAfter()', function() {
         .startIn(200);
 
     schedule.on('stop', function() {
-      expect(Date.now() - start).to.be.above(1199);
+      expect(Date.now() - start).to.be.above(1190);
       done();
     });
   });
@@ -120,8 +120,8 @@ describe('#stopAfter()', function() {
 
     schedule.on('stop', function() {
       let stopTime = Date.now() - start;
-      expect(stopTime).to.be.above(999);
-      expect(stopTime).to.not.be.above(2000);
+      expect(stopTime).to.be.above(990);
+      expect(stopTime).to.not.be.above(1100);
       done();
     });
   });
