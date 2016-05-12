@@ -103,7 +103,7 @@ execute(task)
   .start();
 ```
 
-Run for 1 minute starting next task immediately after current one finishes:
+Run for 1 minute starting every next task immediately after previous one finishes:
 ```javascript
 execute(task)
   .stopAfter('1m')
