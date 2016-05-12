@@ -113,7 +113,7 @@ execute(task)
 Run task with 1 minute interval and stop if an error occurred:
 ```javascript
 let schedule =
-  execution(task)
+  execute(task)
     .every('1m')
     .on('error', function(err) {
       schedule.stop();
