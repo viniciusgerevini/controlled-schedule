@@ -22,6 +22,12 @@ describe('Event handler', function() {
     handler.setEventCallback('success', callback);
     handler.setEventCallback('error', callback);
     handler.setEventCallback('stop', callback);
+    handler.setInternalEventCallback('next-run', callback);
+
+    expect(() =>
+      handler.setEventCallback('next-run', callback)
+    ).to.throw('Event next-run does not exist');
+
     expect(() =>
       handler.setEventCallback('wrong', callback)
     ).to.throw('Event wrong does not exist');
@@ -29,6 +35,7 @@ describe('Event handler', function() {
 
   it('should trigger only success related callbacks', function() {
     let runCallback = sandbox.stub();
+    let nextRunCallback = sandbox.stub();
     let successCallback = sandbox.stub();
     let errorCallback = sandbox.stub();
     let stopCallback = sandbox.stub();
@@ -37,17 +44,20 @@ describe('Event handler', function() {
     handler.setEventCallback('success', successCallback);
     handler.setEventCallback('error', errorCallback);
     handler.setEventCallback('stop', stopCallback);
+    handler.setInternalEventCallback('next-run', nextRunCallback);
 
     handler.triggerSuccessCallbacks();
 
     sinon.assert.called(runCallback);
     sinon.assert.called(successCallback);
+    sinon.assert.called(nextRunCallback);
     sinon.assert.notCalled(errorCallback);
     sinon.assert.notCalled(stopCallback);
   });
 
   it('should trigger only error related callbacks', function() {
     let runCallback = sandbox.stub();
+    let nextRunCallback = sandbox.stub();
     let successCallback = sandbox.stub();
     let errorCallback = sandbox.stub();
     let stopCallback = sandbox.stub();
@@ -56,11 +66,13 @@ describe('Event handler', function() {
     handler.setEventCallback('success', successCallback);
     handler.setEventCallback('error', errorCallback);
     handler.setEventCallback('stop', stopCallback);
+    handler.setInternalEventCallback('next-run', nextRunCallback);
 
     handler.triggerErrorCallbacks();
 
     sinon.assert.called(runCallback);
     sinon.assert.notCalled(successCallback);
+    sinon.assert.called(nextRunCallback);
     sinon.assert.called(errorCallback);
     sinon.assert.notCalled(stopCallback);
   });
@@ -98,6 +110,26 @@ describe('Event handler', function() {
     let error = new Error('some error');
     let callback = sandbox.stub();
     handler.setEventCallback('run', callback);
+
+    handler.triggerErrorCallbacks(error);
+
+    sinon.assert.calledWith(callback, error);
+  });
+
+  it('should trigger next-run callback with passed value and no error', function() {
+    let value = 'some value';
+    let callback = sandbox.stub();
+    handler.setInternalEventCallback('next-run', callback);
+
+    handler.triggerSuccessCallbacks(value);
+
+    sinon.assert.calledWith(callback, null, value);
+  });
+
+  it('should trigger next-run callback with error', function() {
+    let error = new Error('some error');
+    let callback = sandbox.stub();
+    handler.setInternalEventCallback('next-run', callback);
 
     handler.triggerErrorCallbacks(error);
 
