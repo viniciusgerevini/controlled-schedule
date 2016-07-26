@@ -27,7 +27,7 @@ execute(task)
     // do something
   });
 ```
-For more examples check `/examples` folder.
+For more examples check `/examples` folder and the end of this README.
 
 ## Instalation
 
@@ -92,6 +92,14 @@ schedule.on('stop', function() {
 
 });
 
+// return Promise for the next execution
+schedule.nextRun()
+  .then(function(value) {
+
+  })
+  .catch(function(err) {
+
+  });
 ```
 
 ### More examples
@@ -121,6 +129,8 @@ let schedule =
     })
     .start()
 ```
+
+For more examples check `/examples` folder.
 
 ## License
 

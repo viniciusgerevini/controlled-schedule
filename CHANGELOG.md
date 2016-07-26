@@ -1,3 +1,6 @@
+# 1.1.0 | 2016-07-25
+- nextRun() - Returns a Promise that is fulfilled or rejected after next task's execution.
+
 # 1.0.1 | 2016-05-13
 
 - stopAfter() timer starts to count only after schedule start.
