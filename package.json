@@ -4,10 +4,10 @@
   "description": "Recurring schedule for async tasks. Schedule next execution only after the current one finishes",
   "main": "lib/controlled-schedule.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha",
-    "lint": "./node_modules/.bin/eslint ./",
+    "test": "mocha",
+    "lint": "eslint ./",
     "pretest": "npm run lint",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha"
+    "coverage": "istanbul cover _mocha"
   },
   "keywords": [
     "schedule",
