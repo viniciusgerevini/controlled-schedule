@@ -1,3 +1,7 @@
+# 2.0.0 | 2020-10-25
+- Update to latest node lts 12.19.
+- Update devpendencies to fix vulnerability issues.
+
 # 1.2.0 | 2017-06-05
 - Upgrade dependency 'ms' to 2.0.0 in order to fix ReDoS vulnerability
 
